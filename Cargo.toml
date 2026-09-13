@@ -5,14 +5,43 @@ edition = "2024"
 
 [dependencies]
 tokio = { version = "1.0", features = ["full"] }
+reqwest = { version = "0.11", features = ["json"] }
 # WebSocket
 tokio-tungstenite = { version = "0.21", features = ["rustls-tls-native-roots"] }
+futures-util = "0.3"
 # bytes = "1.6"
 # skip-list = "0.1.3"
 # bincode = "1.3"
+
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
 
 anyhow = "1.0"
 
 tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 tracing-appender = "0.2"
+
+# Solana websocket client
+solana-pubsub-client = "4.2.2"
+# Solana RPC 请求/响应的数据结构
+solana-rpc-client-types = "4.2.2"
+# Solana 地址类型 Pubkey
+solana-pubkey = "4.2.1"
+# confirmed / finalized / processed
+solana-commitment-config = "3.1.1"
+# Solana RPC 客户端
+solana-rpc-client = "4.2.2"
+
+solana-signature = "3.4.1"
+
+# 新增：交易状态/编码类型
+solana-transaction-status-client-types = "4.2.2"
+# 新增：账户解码类型（AccountInfo）
+solana-account-decoder-client-types = "4.2.2"
+# 新增：Account 结构体
+solana-account = "4.3.2"
+# 新增：Hash
+solana-hash = "4.5.0"
+
+dotenvy = "0.15"

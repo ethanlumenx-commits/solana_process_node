@@ -17,18 +17,18 @@ use solana_rpc_client_types::config::RpcTransactionConfig;
 use solana_account::Account;
 use solana_hash::Hash;
 
-pub struct HeliusRpcClient { 
+pub struct SolanaRpcClient { 
     rpc_client: Arc<RpcClient>,
 }
 
-impl HeliusRpcClient{
+impl SolanaRpcClient{
     pub fn new(rpc_url: String) -> Self{
         let rpc_client = Arc::new(
             RpcClient::new_with_commitment(
                 rpc_url,
                 CommitmentConfig::confirmed())
         );
-        HeliusRpcClient{rpc_client}
+        SolanaRpcClient{rpc_client}
     }
 
     /// Get balance
@@ -104,7 +104,7 @@ mod tests {
         dotenv().ok();
         let rpcurl = std::env::var("RPCURL").expect("RPC_URL not set");
         println!("RPCURL: {}", rpcurl);
-        let helius_client = Arc::new(HeliusRpcClient::new(rpcurl));
+        let helius_client = Arc::new(SolanaRpcClient::new(rpcurl));
         let block_height = helius_client.get_block_height().await.unwrap();
         println!("Block Height: {}", block_height);
     }
@@ -123,7 +123,7 @@ mod tests {
         dotenv().ok();
         let rpcurl = std::env::var("RPCURL").expect("RPC_URL not set");
         println!("RPCURL: {}", rpcurl);
-        let helius_client = Arc::new(HeliusRpcClient::new(rpcurl));
+        let helius_client = Arc::new(SolanaRpcClient::new(rpcurl));
         
         // Pubkey
         let pubkey = Pubkey::from_str("vines1vzrYbzLMRdu58ou5XTby4qAqVRLmqo36NKPTg").unwrap();
@@ -146,6 +146,7 @@ mod tests {
             if let Ok(sig) = sig { 
                 let transaction = helius_client.get_transaction_with_config(&sig).await.unwrap();
                 println!("Transaction: {:?}", transaction);
+
             }
             
             

@@ -1,1 +1,31 @@
 2026-09-01T13:48:57.113552Z  INFO solana_process_node: Hello, world!
+2026-09-21T06:53:16.383156Z  INFO solana_process_node::server::data_parse: Account Keys: ["E16prLnWTwfLUYgXRTELYgw4u8QUnN9CAcHceLrDTjN1", "vines1vzrYbzLMRdu58ou5XTby4qAqVRLmqo36NKPTg", "11111111111111111111111111111111", "ComputeBudget111111111111111111111111111111"]
+2026-09-21T06:53:16.383596Z  INFO solana_process_node::server::data_parse: Instructions: [UiCompiledInstruction { program_id_index: 3, accounts: [], data: "3b1H8Rq1T3d1", stack_height: Some(1) }, UiCompiledInstruction { program_id_index: 3, accounts: [], data: "LKoyXd", stack_height: Some(1) }, UiCompiledInstruction { program_id_index: 2, accounts: [0, 1], data: "3Bxs4ThwQbE4vyj5", stack_height: Some(1) }]
+2026-09-21T06:53:16.383847Z  INFO solana_process_node::server::data_parse: --------------------
+2026-09-21T06:53:16.384138Z  INFO solana_process_node::server::data_parse: program_id_index: 3, program:ComputeBudget111111111111111111111111111111
+2026-09-21T06:53:16.384529Z  INFO solana_process_node::server::data_parse: data: 3b1H8Rq1T3d1
+2026-09-21T06:53:16.385054Z  INFO solana_process_node::server::data_parse: stack_height: Some(1)
+2026-09-21T06:53:16.385436Z  INFO solana_process_node::server::data_parse: --------------------
+2026-09-21T06:53:16.385709Z  INFO solana_process_node::server::data_parse: program_id_index: 3, program:ComputeBudget111111111111111111111111111111
+2026-09-21T06:53:16.386046Z  INFO solana_process_node::server::data_parse: data: LKoyXd
+2026-09-21T06:53:16.386383Z  INFO solana_process_node::server::data_parse: stack_height: Some(1)
+2026-09-21T06:53:16.386997Z  INFO solana_process_node::server::data_parse: --------------------
+2026-09-21T06:53:16.387260Z  INFO solana_process_node::server::data_parse: program_id_index: 2, program:11111111111111111111111111111111
+2026-09-21T06:53:16.387738Z  INFO solana_process_node::server::data_parse: accounts: E16prLnWTwfLUYgXRTELYgw4u8QUnN9CAcHceLrDTjN1
+2026-09-21T06:53:16.388350Z  INFO solana_process_node::server::data_parse: accounts: vines1vzrYbzLMRdu58ou5XTby4qAqVRLmqo36NKPTg
+2026-09-21T06:53:16.388963Z  INFO solana_process_node::server::data_parse: data: 3Bxs4ThwQbE4vyj5
+2026-09-21T06:53:16.389513Z  INFO solana_process_node::server::data_parse: stack_height: Some(1)
+2026-09-21T06:53:16.390113Z  INFO solana_process_node::server::data_parse: --------------------
+2026-09-22T09:38:18.818235Z  INFO solana_process_node::server::data_parse: --------------------
+2026-09-22T09:38:18.818712Z  INFO solana_process_node::server::data_parse: program_id: ComputeBudget111111111111111111111111111111
+2026-09-22T09:38:18.819010Z  INFO solana_process_node::server::data_parse: accounts: []
+2026-09-22T09:38:18.819225Z  INFO solana_process_node::server::data_parse: data: 3b1H8Rq1T3d1
+2026-09-22T09:38:18.819456Z  INFO solana_process_node::server::data_parse: stack_height: Some(1)
+2026-09-22T09:38:18.819879Z  INFO solana_process_node::server::data_parse: program_id: ComputeBudget111111111111111111111111111111
+2026-09-22T09:38:18.820261Z  INFO solana_process_node::server::data_parse: accounts: []
+2026-09-22T09:38:18.820702Z  INFO solana_process_node::server::data_parse: data: LKoyXd
+2026-09-22T09:38:18.820928Z  INFO solana_process_node::server::data_parse: stack_height: Some(1)
+2026-09-22T09:38:18.821241Z  INFO solana_process_node::server::data_parse: program_id: 11111111111111111111111111111111
+2026-09-22T09:38:18.821590Z  INFO solana_process_node::server::data_parse: accounts: [E16prLnWTwfLUYgXRTELYgw4u8QUnN9CAcHceLrDTjN1, vines1vzrYbzLMRdu58ou5XTby4qAqVRLmqo36NKPTg]
+2026-09-22T09:38:18.821989Z  INFO solana_process_node::server::data_parse: data: 3Bxs4ThwQbE4vyj5
+2026-09-22T09:38:18.822259Z  INFO solana_process_node::server::data_parse: stack_height: Some(1)

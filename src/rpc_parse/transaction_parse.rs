@@ -3,7 +3,9 @@ use solana_transaction_status_client_types::{
     EncodedTransaction, 
     //UiTransactionEncoding,
     UiMessage,
+    UiCompiledInstruction,
 };
+
 
 pub struct TransactionParse{
     confirmed_transaction: EncodedConfirmedTransactionWithStatusMeta,
@@ -24,14 +26,33 @@ impl TransactionParse{
         self.confirmed_transaction.block_time
     }
 
-    /// Transaction -> transaction -> enum::Json(UiTransaction), -> pub message: UiMessage, -> enum ::Raw(UiRawMessage), -> pub account_keys: Vec<String>,
-    pub fn get_account_keys(&self)->Vec<String>{
+    /// Transaction -> transaction -> enum::Json(UiTransaction), 
+    /// -> pub message: UiMessage, -> enum ::Raw(UiRawMessage), 
+    /// -> pub account_keys: Vec<String>,
+    pub fn get_account_keys(&self)->Option<Vec<String>>{
         if let EncodedTransaction::Json(tx) = &self.confirmed_transaction.transaction.transaction{ 
             if let UiMessage::Raw(raw) = &tx.message{ 
-                return raw.account_keys.clone();
+                return Some(raw.account_keys.clone());
             }
         }
-        Vec::new()
+        None
+    }
+
+    /// Transaction -> transaction -> enum::Json(UiTransaction), 
+    /// -> pub message: UiMessage, -> enum ::Raw(UiRawMessage), 
+    /// -> pub instructions: Vec<UiCompiledInstruction>,
+    /// pub struct UiCompiledInstruction 
+    ///     pub program_id_index: u8,
+    ///     pub accounts: Vec<u8>,
+    ///     pub data: String,
+    ///     pub stack_height: Option<u32>,
+    pub fn get_instructions(&self)->Option<Vec<UiCompiledInstruction>>{
+        if let EncodedTransaction::Json(tx) = &self.confirmed_transaction.transaction.transaction{ 
+            if let UiMessage::Raw(raw) = &tx.message{ 
+                return Some(raw.instructions.clone());
+            }
+        }
+        None
     }
 
 

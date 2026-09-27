@@ -1,13 +1,20 @@
 use std::{str::FromStr};
 
 use anyhow::Result;
+use bs58::decode;
 use solana_pubkey::Pubkey;
 use solana_transaction_status_client_types::UiCompiledInstruction;
 
+// instructions: [
+// UiCompiledInstruction { program_id_index: 3, accounts: [], data: "3b1H8Rq1T3d1", stack_height: Some(1)}, 
+// UiCompiledInstruction { program_id_index: 3, accounts: [], data: "LKoyXd", stack_height: Some(1)},
+// UiCompiledInstruction { program_id_index: 2, accounts: [0,1], data: "3Bxs4ThwQbE4vyj5", stack_height: Some(1)}
+// ]
 pub struct InstructionParsed {
     pub program_id: Pubkey,
     pub accounts: Vec<Pubkey>,
     pub data: String,
+    pub decode_data: Vec<u8>,
     pub stack_height: Option<u32>,
 }
 
@@ -34,15 +41,22 @@ impl InstructionParsed{
 
         let data = ui_compiled_instruction.data.clone();
 
+        let decode_data = decode(&data).into_vec()?;
+
         let stack_height = ui_compiled_instruction.stack_height;
             
-
-
         Ok(Self {
             program_id,
             accounts,
             data,
+            decode_data,
             stack_height,
         })
+    }
+
+    pub fn decode_data(&self)->anyhow::Result<Vec<u8>>{
+        
+        let decoded_data = decode(&self.data).into_vec()?;
+        Ok(decoded_data)
     }
 }

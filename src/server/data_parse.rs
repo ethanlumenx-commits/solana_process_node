@@ -1,24 +1,35 @@
 use std::{str::FromStr};
-use crate::rpc_client::solana_rpc_client::SolanaRpcClient;
-use crate::rpc_parse::transaction_parse::TransactionParse;
-use crate::rpc_parse::instruction_parse::InstructionParsed;
+use crate::rpc_client::{
+    SolanaRpcClient
+};
+
+use crate::rpc_parse::{
+    TransactionParse,
+    InstructionParsed,
+    DisPatcher,
+    InstructionType,
+};
+
 use solana_pubkey::Pubkey;
 use solana_signature::Signature;
-use tracing::info;
+use tracing::{error, info};
 
 
 pub struct DataParse{
     rpcurl:String,
     client:SolanaRpcClient,
+    dispatcher:DisPatcher,
 }
 
 impl DataParse{
-    pub fn new(rpcurl:&str,) -> Self {
+    pub fn new(rpcurl:&str,) -> anyhow::Result<Self> {
         let helius_client = SolanaRpcClient::new(rpcurl.to_string());
-        DataParse{
+        let dispatcher = DisPatcher::new()?;
+        Ok(DataParse{
             rpcurl: rpcurl.to_string(), 
-            client: helius_client
-        }
+            client: helius_client,
+            dispatcher,
+        })
     }
     pub async fn get_newest_signatures_for_address(
         &self,
@@ -38,6 +49,7 @@ impl DataParse{
             
     }
 
+    /// send one Signature and get transaction
     pub async fn get_transaction_with_config(
         &self,
         sig:&Signature,) -> anyhow::Result<TransactionParse>{
@@ -56,20 +68,46 @@ impl DataParse{
             let sig = self.get_newest_signatures_for_address(pubkey).await?;
 
             let transaction_parse = self.get_transaction_with_config(&sig).await?;
-
+            
+            // [xxx,xxx,xxx]
             let account_keys = transaction_parse
                 .get_account_keys().ok_or(anyhow::anyhow!("The account_keys parse is error"))?;
-
+            // [propgram_id,accounts,data,stack_height]
             let instructions = transaction_parse
                 .get_instructions().ok_or(anyhow::anyhow!("The instructions parse is error"))?;
 
-            info!("--------------------");
             for i in instructions.iter() { 
+                // [propgram_id,accounts,data,stack_height] to InstructionParsed struct
                 let parsed = InstructionParsed::from_ui_compiled_instruction(i, &account_keys)?;
-                info!("program_id: {}", parsed.program_id);
-                info!("accounts: {:?}", parsed.accounts);
-                info!("data: {}", parsed.data);
-                info!("stack_height: {:?}", parsed.stack_height);
+                // info!("program_id: {}", parsed.program_id);
+                // info!("accounts: {:?}", parsed.accounts);
+                // info!("data: {}", parsed.data);
+                // info!("dataded: {:?}",parsed.decode_data());
+                // info!("stack_height: {:?}", parsed.stack_height);
+                
+                // dispatch by propgram_id 
+                match self.dispatcher.dispatch(
+                    &parsed,
+                ) {
+                    Ok(instruct_type)=>{
+                        match instruct_type{
+                            InstructionType::SystemTransfer(system_transfer)=>{
+                                info!("SystemTransfer: {:?}", system_transfer);
+                            }
+                            InstructionType::ComputeBudget(compute_budget)=>{
+                                info!("ComputeBudget: {:?}", compute_budget);
+                            }
+                            InstructionType::NotSupported=>{
+                                info!("NotSupported");
+                            }
+                            
+                        }
+                    }
+                    Err(e)=>{
+                        error!("Error: {}", e);
+                    }
+                }
+
             }
             Ok(())
     }
@@ -91,10 +129,16 @@ mod tests {
         let pubkey = Pubkey::from_str("vines1vzrYbzLMRdu58ou5XTby4qAqVRLmqo36NKPTg").unwrap();
         
         let parseclient = DataParse::new(&rpcurl);
-        let data = parseclient.transaction_to_struct(&pubkey).await;
-        match data{
-            Ok(_) => println!("Success"),
+        match parseclient{
+            Ok(parseclient) => {
+                let data = parseclient.transaction_to_struct(&pubkey).await;
+                match data{
+                    Ok(_) => println!("Success"),
+                    Err(e) => println!("Error: {}", e),
+                }
+            },
             Err(e) => println!("Error: {}", e),
         }
+        
     }
 }

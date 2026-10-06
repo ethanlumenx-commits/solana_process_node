@@ -18,6 +18,10 @@ pub enum ComputeBudgetInstruction {
 
 impl ComputeBudgetInstruction {
     pub fn new(data:&[u8])->anyhow::Result<Self>{
+        if data.len() < 1{ 
+            return Err(anyhow::anyhow!("Invalid ComputeBudgetInstruction data length{}",data.len()));
+        }
+
         match data[0] { 
             1 =>{
                 if data.len() < 5{ 

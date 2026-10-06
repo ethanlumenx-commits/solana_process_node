@@ -10,6 +10,7 @@ use solana_transaction_status_client_types::UiCompiledInstruction;
 // UiCompiledInstruction { program_id_index: 3, accounts: [], data: "LKoyXd", stack_height: Some(1)},
 // UiCompiledInstruction { program_id_index: 2, accounts: [0,1], data: "3Bxs4ThwQbE4vyj5", stack_height: Some(1)}
 // ]
+#[derive(Debug,Clone)]
 pub struct InstructionParsed {
     pub program_id: Pubkey,
     pub accounts: Vec<Pubkey>,
@@ -32,7 +33,7 @@ impl InstructionParsed{
             .iter()
             .map(|accounts_index|{
                 let account = accounts.get(*accounts_index as usize)
-                .ok_or_else(|| anyhow::anyhow!("Invalid account"))?;
+                .ok_or_else(|| anyhow::anyhow!("Invalid account index = {}, accounts_len = {}", accounts_index, accounts.len()))?;
 
                 Ok(Pubkey::from_str(account)?)
                 

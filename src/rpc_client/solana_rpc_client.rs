@@ -64,7 +64,7 @@ impl SolanaRpcClient{
         let config = RpcTransactionConfig {
             encoding: Some(UiTransactionEncoding::Json),
             commitment: Some(CommitmentConfig::confirmed()), //processed 刚看到数据    confirmed 网络已经确认    finalized 最终确定
-            max_supported_transaction_version: Some(0),  // 客户端最多支持 Version 0 的交易
+            max_supported_transaction_version: Some(1),  // 客户端最多支持 Version 1 的交易
         };
 
         let transaction = self.rpc_client.get_transaction_with_config(
